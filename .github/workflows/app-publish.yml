@@ -1,0 +1,31 @@
+name: Flutter Publish
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest # will need [macOS-latest] when building iOS app.
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11.x'
+      - name: Flutter action
+        uses: subosito/flutter-action@v1
+        with:
+          channel: 'stable' # or: 'dev' or 'beta'
+        env:
+          - GPG_PASSWORD: $
+      - run: ./.github/scripts/decrypt_secrets.sh
+      - run: flutter pub get
+      - run: flutter test
+      - run: flutter build appbundle
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: bundle
+          path: build/app/outputs/bundle/release
+    # Need to figure out how to handle iOS signing on GH actions.
+    #- run: flutter build ios
