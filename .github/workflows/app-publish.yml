@@ -16,9 +16,9 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           channel: 'stable' # or: 'dev' or 'beta'
-        env:
-          - GPG_PASSWORD: $
       - run: ./.github/scripts/decrypt_secrets.sh
+        env:
+          GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
       - run: flutter pub get
       - run: flutter test
       - run: flutter build appbundle
