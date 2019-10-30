@@ -20,6 +20,7 @@ class DoorzLevelService extends ConfigurableService {
   }
 
   final _historyService = HistoryService();
+  final _random = Random.secure();
 
   /// NOT functionally pure. Each invocation of this function
   /// will return a new random DoorzLevelParameters object with a new correct door.
@@ -39,10 +40,16 @@ class DoorzLevelService extends ConfigurableService {
     return DoorzLevel();
   }
 
-  Gameover _gameover() {
-    _historyService.writeHistory(level);
-    level = 1;
-    return Gameover();
+  Widget _gameover() {
+    if (_random.nextBool() && _random.nextInt(level) >= 10) {
+      _historyService.writeHistory(level);
+      int lastLevel = level;
+      level = 1;
+      return Gameover(level: lastLevel);
+    } else {
+      print("Saved by pure chance at level $level!");
+      return _advance();
+    }
   }
 
   @override

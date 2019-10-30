@@ -2,13 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Gameover extends StatelessWidget {
+  Gameover({
+    @required this.level,
+  });
+
+  final int level;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Text('Gameover!'),
+        child: Text('Gameover! You made it to level $level!'),
       ),
     );
   }
